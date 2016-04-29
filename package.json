@@ -1,21 +1,27 @@
 {
-    "name": "saman-node-fann",
-    "description": "",
-    "version": "0.0.1",
-    "main": "./saman-node-fann.js",
-    "author": {
-        "name": "samanshafigh@gmail.com",
-        "email": "saman.shafigh@elmolearning.com.au"
-    },
-    "keywords": [],
-    "licenses": {
-        "type": "none"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/YOUR_LOGIN/saman-node-fann.git"
-    },
-    "bugs": {
-        "url": "http://github.com/YOUR_LOGIN/saman-node-fann/issues"
-    }
+  "name": "saman-node-fann",
+  "description": "",
+  "version": "0.0.1",
+  "main": "./saman-node-fann.js",
+  "author": {
+    "name": "samanshafigh@gmail.com",
+    "email": "saman.shafigh@elmolearning.com.au"
+  },
+  "keywords": [],
+  "licenses": {
+    "type": "none"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/YOUR_LOGIN/saman-node-fann.git"
+  },
+  "bugs": {
+    "url": "http://github.com/YOUR_LOGIN/saman-node-fann/issues"
+  },
+  "dependencies": {
+    "fann": "file:node-fann",
+    "fast-csv": "^1.1.0",
+    "plotter": "^0.5.0",
+    "yamljs": "^0.2.7"
+  }
 }

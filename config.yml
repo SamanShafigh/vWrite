@@ -1,0 +1,105 @@
+training:
+    A:
+      sample: ./data/A.csv
+      map: [0, 0, 0, 0, 0]
+      alias: A
+    B:
+      sample: ./data/B.csv
+      map: [0, 0, 0, 0, 1]
+      alias: B
+    C:
+      sample: ./data/C.csv
+      map: [0, 0, 0, 1, 0]
+      alias: C
+    D:
+      sample: ./data/D.csv
+      map: [0, 0, 0, 1, 1]
+      alias: D
+    E:
+      sample: ./data/E.csv
+      map: [0, 0, 1, 0, 0]
+      alias: E
+    F:
+      sample: ./data/F.csv
+      map: [0, 0, 1, 0, 1]
+      alias: F
+    G:
+      sample: ./data/G.csv
+      map: [0, 0, 1, 1, 0]
+      alias: G
+    H:
+      sample: ./data/H.csv
+      map: [0, 0, 1, 1, 1]
+      alias: H
+    I:
+      sample: ./data/I.csv
+      map: [0, 1, 0, 0, 0]
+      alias: I
+    J:
+      sample: ./data/J.csv
+      map: [0, 1, 0, 0, 1]
+      alias: J
+    K:
+      sample: ./data/K.csv
+      map: [0, 1, 0, 1, 0]
+      alias: K
+    L:
+      sample: ./data/L.csv
+      map: [0, 1, 0, 1, 1]
+      alias: L
+    M:
+      sample: ./data/M.csv
+      map: [0, 1, 1, 0, 0]
+      alias: M
+    N:
+      sample: ./data/N.csv
+      map: [0, 1, 1, 0, 1]
+      alias: N
+    O:
+      sample: ./data/O.csv
+      map: [0, 1, 1, 1, 0]
+      alias: O
+    P:
+      sample: ./data/P.csv
+      map: [0, 1, 1, 1, 1]
+      alias: P
+    Q:
+      sample: ./data/Q.csv
+      map: [1, 0, 0, 0, 0]
+      alias: Q
+    R:
+      sample: ./data/R.csv
+      map: [1, 0, 0, 0, 1]
+      alias: R
+    S:
+      sample: ./data/S.csv
+      map: [1, 0, 0, 1, 0]
+      alias: S
+    T:
+      sample: ./data/T.csv
+      map: [1, 0, 0, 1, 1]
+      alias: T
+    U:
+      sample: ./data/U.csv
+      map: [1, 0, 1, 0, 0]
+      alias: U
+    V:
+      sample: ./data/V.csv
+      map: [1, 0, 1, 0, 1]
+      alias: V
+    W:
+      sample: ./data/W.csv
+      map: [1, 0, 1, 1, 0]
+      alias: W
+    X:
+      sample: ./data/X.csv
+      map: [1, 0, 1, 1, 1]
+      alias: X
+    Y:
+      sample: ./data/Y.csv
+      map: [1, 1, 0, 0, 0]
+      alias: Y
+    Z:
+      sample: ./data/Z.csv
+      map: [1, 1, 0, 0, 1]
+      alias: Z
