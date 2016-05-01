@@ -1,24 +1,39 @@
 var fann = require('fann');
 var yaml = require('yamljs');
-var extractor = require('./module/extractor');
 var plot = require('plotter').plot;
+var extractor = require('./module/extractor');
 
 var config = yaml.load('config.yml');
 var training = config.training;
+
+/*
+var item = {
+    'sample': './data/test.csv',
+    'map': [0, 0, 0, 0, 0],
+    'alias': 'A'
+  };
+extractor.extract(item, function(data, item) {
+    plot({
+        data:       data,
+        filename:   './plot/' + item.alias + '.png'
+    });
+});
+*/
+
 
 for (var key in training) {
     if (training.hasOwnProperty(key)) {
         var item = training[key];
         extractor.extract(item, function(data, item) {
-            /*
             plot({
                 data:       data,
                 filename:   './plot/' + item.alias + '.png'
             });
-            */
         });
     }
 }
+
+
 
 /*
 /*

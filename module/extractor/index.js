@@ -7,7 +7,9 @@ exports.extract = function (item, callback) {
     var dataBag = [];
     csv.fromStream(stream)
         .on("data", function(data) {
-            dataBag.push(data[1]);
+            if (!isNaN(data[1])) {
+                dataBag.push(parseInt(data[1]));
+            }
         })
         .on("end", function() {
             dataBag = splitter.split(dataBag);
