@@ -1,6 +1,5 @@
 var fs = require('fs');
 var csv = require('fast-csv');
-var splitter = require('./splitter');
 
 exports.extract = function (item, callback) {
     var stream = fs.createReadStream(item.sample);
@@ -12,7 +11,6 @@ exports.extract = function (item, callback) {
             }
         })
         .on("end", function() {
-            dataBag = splitter.split(dataBag);
             callback(dataBag, item);
         });
 };

@@ -2,40 +2,58 @@ var fann = require('fann');
 var yaml = require('yamljs');
 var plot = require('plotter').plot;
 var extractor = require('./module/extractor');
+var splitter = require('./module/splitter');
 
 var config = yaml.load('config.yml');
 var training = config.training;
 
-/*
 var item = {
     'sample': './data/test.csv',
     'map': [0, 0, 0, 0, 0],
-    'alias': 'A'
+    'alias': 'A',
+    'boundary': [
+            [2970, 3090],
+            [3470, 3590],
+            [3870, 3990],
+            [4315, 4435],
+            [4735, 4855],
+            [5095, 5215],
+            [5480, 5600],
+            [6250, 6370],
+            [6595, 6715]
+        ]
   };
+  
 extractor.extract(item, function(data, item) {
-    plot({
-        data:       data,
-        filename:   './plot/' + item.alias + '.png'
-    });
+    data = splitter.get(data, item.boundary);
+    for (var i = 0; i < data.length; i++) {
+        plot({
+            data:       data[i],
+            filename:   './plot/' + item.alias + '-' + i + '.png',
+            options: ['yrange [1400:2400]']
+        });
+        
+    }
 });
-*/
 
-
+/*
 for (var key in training) {
     if (training.hasOwnProperty(key)) {
         var item = training[key];
         extractor.extract(item, function(data, item) {
-            plot({
-                data:       data,
-                filename:   './plot/' + item.alias + '.png'
-            });
+            data = splitter.get(data, item.boundary);
+            for (var i = 0; i < data.length; i++) {
+                plot({
+                    data:       data[i],
+                    filename:   './plot/' + item.alias + '-' + i + '.png',
+                    options: ['yrange [1400:2200]']
+                });
+
+            }
         });
     }
 }
 
-
-
-/*
 /*
 var net = new fann.standard(2,8,2);
 
