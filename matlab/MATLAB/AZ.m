@@ -1,0 +1,82 @@
+clc
+Alphabet='ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+
+inputBoundry(:,:,1)=[2970 3090; 3470 3590; 3870 3990; 4315 4435; 4735 4855];    %A 
+inputBoundry(:,:,2)=[580 690; 990 1100; 1380 1490; 1760 1870; 2270 2380];       %B 
+inputBoundry(:,:,3)=[570 650; 980 1060; 1410 1490; 3430 3510; 4010 4090];       %C 
+inputBoundry(:,:,4)=[900 1060; 1350 1510; 1780 1940; 2240 2400; 2860 3020];     %D 
+inputBoundry(:,:,5)=[1840 1990; 2235 2385; 2560 2710; 2900 3050; 3220 3370];    %E 
+inputBoundry(:,:,6)=[1600 1800; 2200 2400; 2745 2945; 3420 3620; 4545 4745];    %F 
+inputBoundry(:,:,7)=[1360 1520; 1880 2040; 2760 2920; 3620 3780; 4240 4400];    %G 
+inputBoundry(:,:,8)=[650 820; 1140 1310; 2150 2320; 2660 2830; 3160 3330];      %H 
+inputBoundry(:,:,9)=[1280 1550; 1735 2005; 2140 2410; 2670 2940; 3120 3390];    %I 
+inputBoundry(:,:,10)=[2010 2180; 2490 2660; 3160 3330; 3820 3990; 4420 4590];   %J 
+inputBoundry(:,:,11)=[540 740; 1210 1410; 1930 2130; 2790 2990; 3480 3680];     %K 
+inputBoundry(:,:,12)=[1020 1130; 1660 1770; 2280 2390; 2850 2960; 3460 3570];   %L 
+inputBoundry(:,:,13)=[660 830; 1620 1790; 2250 2420; 2760 2930; 3260 3430];     %M 
+inputBoundry(:,:,14)=[1330 1480; 1910 2060; 2630 2780; 3310 3460; 3900 4050];   %N 
+
+
+inputBoundry(:,:,15)=[880 1030; 1250 1400; 1650 1800; 2140 2290; 2630 2780];   %O 
+inputBoundry(:,:,16)=[1160 1320; 1700 1860; 2180 2340; 2680 2840; 3170 3330];   %P 
+inputBoundry(:,:,17)=[1130 1340; 1740 1950; 2360 2570; 3000 3210; 3680 3890];   %Q 
+inputBoundry(:,:,18)=[2070 2320; 2700 2950; 3250 3500; 3850 4100; 4500 4750];   %R 
+inputBoundry(:,:,19)=[1150 1330; 1900 2080; 2520 2700; 3270 3450; 3950 4130];   %S 
+inputBoundry(:,:,20)=[1500 1650; 1990 2140; 2920 3070; 3340 3490; 3830 3980];   %T 
+inputBoundry(:,:,21)=[1340 1490; 1790 1940; 2180 2330; 2520 2670; 3050 3200];   %U 
+inputBoundry(:,:,22)=[2220 2400; 2595 2775; 2980 3160; 3320 3500; 3660 3840];   %V 
+inputBoundry(:,:,23)=[2090 2290; 2760 2960; 3280 3480; 3820 4020; 4320 4520];   %W 
+inputBoundry(:,:,24)=[850 1000; 1370 1520; 1800 1950; 2225 2375; 2650 2800];   %X 
+inputBoundry(:,:,25)=[660 840; 1150 1330; 1760 1940; 2260 2440; 2660 2840];   %Y 
+inputBoundry(:,:,26)=[2530 2730; 2920 3120; 3330 3530; 3770 3970; 4160 4360];   %Z 
+
+
+dataUsed=24
+[m,n,o]=size(inputBoundry(:,:,:));
+
+%{
+for i=14:26,
+ for j=1:5,
+    inputBoundry(j,2,i)-inputBoundry(j,1,i)
+ end
+end
+%}
+
+for i=1:o,
+ arraySize(i)=inputBoundry(1,2,i)-inputBoundry(1,1,i);
+end
+inputArraySeprate=zeros(300,24,26,5); 
+1
+
+for i=1:o,
+    openFileName=['./calibrated/',Alphabet(i),'-10cm-100Hz-calibrated.xlsx'];
+    size(xlsread(openFileName, 1));
+
+    inputArray = xlsread(openFileName, 1);
+    for j=1:m,
+        inputArraySeprate(1:arraySize(i)+1,:,i,j)=inputArray(inputBoundry(j,1,i):inputBoundry(j,2,i),1:end);
+    end
+    clearvars inputArray;
+end
+2
+
+distanceAv=zeros(26,26);
+for i=1:o,
+   traningInput=rot90(inputArraySeprate(1:arraySize(i)+1,dataUsed,i,1));
+   i
+   for j=1:o,
+        distance=0;
+        for k=2:5,
+            sampleInput=rot90(inputArraySeprate(1:arraySize(j)+1,dataUsed,j,k));
+            distance=distance+dtw(traningInput,sampleInput);
+            clearvars sampleInput;
+        end
+        distanceAv(i,j)=distance/5;
+   end
+   clearvars traningInput;
+end
+3
+distanceAv
+plot(distanceAv)
+
+    
