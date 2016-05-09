@@ -7,7 +7,7 @@ exports.extract = function (item, callback) {
     csv.fromStream(stream)
         .on("data", function(data) {
             if (!isNaN(data[1])) {
-                dataBag.push(parseInt(data[1]));
+                dataBag.push(data);
             }
         })
         .on("end", function() {

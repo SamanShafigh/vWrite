@@ -3,12 +3,13 @@ var yaml = require('yamljs');
 var plot = require('plotter').plot;
 var extractor = require('./module/extractor');
 var splitter = require('./module/splitter');
+var calibrator = require('./module/calibrator');
 
 var config = yaml.load('config.yml');
 var training = config.training;
 
 var item = {
-    'sample': './data/test.csv',
+    'sample': './data/raw/test.csv',
     'map': [0, 0, 0, 0, 0],
     'alias': 'A',
     'boundary': [
@@ -25,6 +26,7 @@ var item = {
   };
   
 extractor.extract(item, function(data, item) {
+    data = calibrator.calibrate(data);
     data = splitter.get(data, item.boundary);
     for (var i = 0; i < data.length; i++) {
         plot({
