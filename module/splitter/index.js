@@ -4,10 +4,23 @@ var recall = 10;
 var thresholdValue = 200;
 var thresholdFrame = 5;
 
-exports.get = function (dataBag, boundary) {
+exports.get = function (dataBag, boundary, length) {
     var data = [];
-    for (var i = 0; i < boundary.length; i++) {
+    if (length === undefined) {
+        length = boundary.length;
+    }
+    
+    for (var i = 0; i < length; i++) {
         data.push(dataBag.slice(boundary[i][0], boundary[i][1]));
+    }
+    
+    return data;
+};
+
+exports.getOneDimension = function(dataBag, dimension) {
+    var data = [];
+    for (var i = 0; i < dataBag.length; i++) {
+        data.push(dataBag[i][dimension]);
     }
     
     return data;

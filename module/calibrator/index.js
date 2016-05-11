@@ -20,29 +20,30 @@ exports.calibrate = function (data) {
     for (var i = 0; i < data.length; i++) {
         var row = [];
         row.push(i);
-        for (var j = 0; j < 3; j++) {
+        for (var j = 0; j < 2; j++) {
             var calibrationMatrix = calibrationMatrixs[j];
             var calibrationParam = calibrationParams[j];
             var offset = calibrationParam.offset;
             
-            row.push(data[i][offset[0]]);
-            row.push(data[i][offset[1]]);
-            row.push(data[i][offset[2]]);
+            row.push(math.number(data[i][offset[0]]));
+            row.push(math.number(data[i][offset[1]]));
+            row.push(math.number(data[i][offset[2]]));
             // Sensor raw data
             var rawData = math.matrix(
-                    [[data[i][offset[0]]], 
-                    [data[i][offset[1]]], 
-                    [data[i][offset[2]]]]
-                    );
+                [
+                    [math.number(data[i][offset[0]])], 
+                    [math.number(data[i][offset[1]])], 
+                    [math.number(data[i][offset[2]])]
+                ]);
             // Sensor calibrated data
             var calData = math.multiply(
                     math.multiply(calibrationMatrix.iRa, calibrationMatrix.iKa), 
                     math.subtract(rawData, calibrationMatrix.Ba)
                 );
         
-            row.push(calData.subset(math.index(0, 0)));
-            row.push(calData.subset(math.index(1, 0)));
-            row.push(calData.subset(math.index(2, 0)));
+            row.push(math.round(calData.subset(math.index(0, 0)), 3));
+            row.push(math.round(calData.subset(math.index(1, 0)), 3));
+            row.push(math.round(calData.subset(math.index(2, 0)), 3));
         }
 
         calibratedData.push(row);

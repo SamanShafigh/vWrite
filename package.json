@@ -19,6 +19,7 @@
     "url": "http://github.com/YOUR_LOGIN/saman-node-fann/issues"
   },
   "dependencies": {
+    "dtw": "0.0.3",
     "fann": "^1.0.0",
     "fast-csv": "^1.1.0",
     "gnu-plot": "^0.1.3",
