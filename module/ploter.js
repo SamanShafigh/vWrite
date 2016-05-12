@@ -7,7 +7,7 @@ exports.plotRawData = function(item, data, dimension) {
             data:       splitter.getOneDimension(data[i], dimension),
             filename:   './plot/raw/' + item.alias + '-' + dimension + '-' + i + '.svg',
             options: [
-                //'yrange [1400:2200]',
+                // 'yrange [1400:2200]',
                 'grid xtics lt 0 lw 0 lc rgb "#eeeeee"', 
                 'grid ytics lt 0 lw 0 lc rgb "#eeeeee"',
                 'terminal svg size 800, 500'
