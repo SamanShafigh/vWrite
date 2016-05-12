@@ -45,4 +45,4 @@ exports.plotDtwData = function(distanceMatrix) {
             ]
         });
     }    
-}
+};
