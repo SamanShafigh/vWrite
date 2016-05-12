@@ -7,7 +7,7 @@ var dtwClassifier = require('./module/classifier/dtw');
 
 var config = yaml.load('config.yml');
 var training = config.training;
-//training = training.slice(0, 24);
+//training = training.slice(0, 3);
 
 var classes = [];
 for (var key in training) {

@@ -5,8 +5,13 @@ exports.plotRawData = function(item, data, dimension) {
     for (var i = 0; i < data.length; i++) {
         plot({
             data:       splitter.getOneDimension(data[i], dimension),
-            filename:   './plot/raw/' + item.alias + '-' + dimension + '-' + i + '.png',
-            //options: ['yrange [1400:2200]']
+            filename:   './plot/raw/' + item.alias + '-' + dimension + '-' + i + '.svg',
+            options: [
+                //'yrange [1400:2200]',
+                'grid xtics lt 0 lw 0 lc rgb "#eeeeee"', 
+                'grid ytics lt 0 lw 0 lc rgb "#eeeeee"',
+                'terminal svg size 800, 500'
+            ]            
         });
     }
 };
@@ -31,11 +36,12 @@ exports.plotDtwData = function(distanceMatrix) {
         
         plot({
             data:       data,
-            filename:   './plot/dtw/' + from.alias + '.png',
+            filename:   './plot/dtw/' + from.alias + '.svg',
             style: 'points',
             options: [
                 'grid xtics lt 0 lw 0 lc rgb "#eeeeee"', 
-                'grid ytics lt 0 lw 0 lc rgb "#eeeeee"'
+                'grid ytics lt 0 lw 0 lc rgb "#eeeeee"',
+                'terminal svg size 800, 800'
             ]
         });
     }    
