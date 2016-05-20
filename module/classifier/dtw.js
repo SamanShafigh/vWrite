@@ -7,7 +7,7 @@ var config = yaml.load('config.yml');
 var training = config.training;
 var dtw = new DTW();
 
-exports.getDistance = function (data) {
+exports.getDistanceMatrix = function (data) {
     var distanceMatrix = [];
     for (var i = 0; i < data.length; i++) {
         var from = data[i];
@@ -31,9 +31,9 @@ exports.getDistance = function (data) {
                 }
                 df[ii] = dt;
             }
-        
             distanceTo.push({'alias': to.item.alias, 'value': df});
         }
+        
         distanceMatrix.push({'alias': from.item.alias, 'distances': distanceTo});
     }
     

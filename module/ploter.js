@@ -17,32 +17,32 @@ exports.plotRawData = function(item, data, dimension) {
 };
 
 exports.plotDtwData = function(distanceMatrix) {
-    for (var i = 0; i < distanceMatrix.length; i++) {
-        var from = distanceMatrix[i];
-        var distanceTo = from.distances;
-        var data = new Object();
-        for (var j = 0; j < distanceTo.length; j++) {
-            var to = distanceTo[j];
-            data[to.alias] = new Object();
-            console.log(from.alias + " -> " + to.alias + ":");
-            for (var ii = 0; ii < to.value.length; ii++) {
+    for (var ii = 0; ii < 5; ii++) {
+        for (var i = 0; i < distanceMatrix.length; i++) {
+            var from = distanceMatrix[i];
+            var distanceTo = from.distances;
+            var data = new Object();
+            for (var j = 0; j < distanceTo.length; j++) {
+                var to = distanceTo[j];
+                data[to.alias] = new Object();
+                console.log(from.alias + " -> " + to.alias + ":");
                 var df = to.value[ii];
                 for (var jj = 0; jj < df.length; jj++) {     
                     var dt = df[jj];
                     data[to.alias][dt[0]] = dt[1];
                 }   
             }
+
+            plot({
+                data:       data,
+                filename:   './plot/dtw/' + from.alias + '-' + ii + '.svg',
+                style: 'points',
+                options: [
+                    'grid xtics lt 0 lw 0 lc rgb "#eeeeee"', 
+                    'grid ytics lt 0 lw 0 lc rgb "#eeeeee"',
+                    'terminal svg size 800, 800'
+                ]
+            });
         }
-        
-        plot({
-            data:       data,
-            filename:   './plot/dtw/' + from.alias + '.svg',
-            style: 'points',
-            options: [
-                'grid xtics lt 0 lw 0 lc rgb "#eeeeee"', 
-                'grid ytics lt 0 lw 0 lc rgb "#eeeeee"',
-                'terminal svg size 800, 800'
-            ]
-        });
     }    
 };

@@ -7,7 +7,7 @@ var dtwClassifier = require('./module/classifier/dtw');
 
 var config = yaml.load('config.yml');
 var training = config.training;
-//training = training.slice(0, 3);
+//training = training.slice(0, 2);
 
 var classes = [];
 for (var key in training) {
@@ -19,7 +19,7 @@ for (var key in training) {
             
             classes.push({'item': item, 'data': data});
             if (classes.length == training.length) {
-                var distanceMatrix = dtwClassifier.getDistance(classes);
+                var distanceMatrix = dtwClassifier.getDistanceMatrix(classes);
                 ploter.plotDtwData(distanceMatrix);
             }
         });
