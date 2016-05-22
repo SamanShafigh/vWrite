@@ -15,12 +15,13 @@ for (var key in training) {
         var item = training[key];
         extractor.extract(item, function(data, item) {
             data = splitter.get(calibrator.calibrate(data), item.boundary, 5);
-            ploter.plotRawData(item, data, 1);
+            //ploter.plotRawData(item, data, 1);
             
             classes.push({'item': item, 'data': data});
             if (classes.length == training.length) {
-                var distanceMatrix = dtwClassifier.getDistanceMatrix(classes);
-                ploter.plotDtwData(distanceMatrix);
+                
+                //var distanceMatrix = dtwClassifier.getDistanceMatrix(classes);
+                //ploter.plotDtwData(distanceMatrix);
             }
         });
     }

@@ -22,10 +22,8 @@
     "dtw": "0.0.3",
     "fann": "^1.0.0",
     "fast-csv": "^1.1.0",
-    "gnu-plot": "^0.1.3",
-    "gnuplot": "^0.3.1",
     "mathjs": "^3.2.1",
-    "sylvester": "0.0.21",
+    "plotter": "^0.5.0",
     "yamljs": "^0.2.7"
   }
 }
