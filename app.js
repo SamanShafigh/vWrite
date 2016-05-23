@@ -29,19 +29,3 @@ for (var key in trainingClasses) {
         });
     }
 }
-
-
-
-<VirtualHost *:80>
-        DocumentRoot "/Users/saman/Sites/elmo.succession/web"
-        ServerName elmo-sc.dev
-        ServerAlias www.elmo-sc.dev
-        ErrorLog "/private/var/log/apache2/elmo.succession.local-error_log"
-        CustomLog "/private/var/log/apache2/elmo.succession.local-access_log" common
-
-        <Directory "/Users/saman/Sites/elmo.succession/web">
-            Options Indexes FollowSymLinks
-            AllowOverride All
-            Require all granted
-        </Directory>
-</VirtualHost>
