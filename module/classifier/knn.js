@@ -4,7 +4,6 @@ var dtwClassifier = require('./dtw');
 var config = yaml.load('config.yml');
 var knnConfig = config.classifier.knn;
 
-
 // Vote between candidate
 function simpleVote(candidates) {
     var frequency = {};
@@ -22,10 +21,12 @@ function simpleVote(candidates) {
     return result;
 }
 
+// Distance penalty voting
 function distanceBasedVote(candidates) {
     var frequency = {};
     var max = 0;
     var result;
+    
     for (var i = 0; i < candidates.length; i++) {
         var candidate = candidates[i].alias;
         var distance = candidates[i].distance;
@@ -39,11 +40,10 @@ function distanceBasedVote(candidates) {
     return result;
 }
 
-
 // Get the Kth nearest neighbor
-function getKNN(subject, trainingData, numberOfNeighbors) {
-    if (numberOfNeighbors === undefined) {
-        numberOfNeighbors = knnConfig.numberOfNeighbors;
+function getKNN(subject, trainingData, K) {
+    if (K === undefined) {
+        K = knnConfig.K;
     }
     var distances = [];
     for (var i = 0; i < trainingData.length; i++) {
@@ -54,43 +54,74 @@ function getKNN(subject, trainingData, numberOfNeighbors) {
         }
     }
     
+    // Sort the training instances based on their distance with the subject
     distances.sort(function(a, b){
         return a.distance - b.distance;
     });
     
+    // Get the K nearest neighbour
     var candidates = [];
-    for (var i = 0; i < numberOfNeighbors; i++) {
+    for (var i = 0; i < K; i++) {
         candidates.push(distances[i]);
     }
     
     return candidates;
 }
 
-function crossValidation(trainingData, voter) {
-    var correctClassifications = 0;
-    var incorrectClassifications = 0;
+// Perform the cross validation of K-NN classification
+function crossValidation(trainingData, voter, K) {
+    var characterBasedClassificationResult = {};
+    var totalClassificationResult = {
+        'correct': 0,  // Total number of correct classifications
+        'incorrect': 0 // Total number of incorrect classifications
+    };
+    if (K === undefined) {
+        K = knnConfig.K;
+    }    
+    
+    //console.log('f^: is a predicted class and f: is an ctual class');
     for (var i = 0; i < trainingData.length; i++) {
-        console.log(trainingData[i].item.alias);
+        var alias = trainingData[i].item.alias;
+        characterBasedClassificationResult[alias] = {
+            'correct': 0,
+            'incorrect': 0
+        };
         for (var j = 0; j < trainingData[i].data.length; j++) {
+            // Bring out the training instance (subject) from training set
             var subject = trainingData[i].data.shift();
-
-            var candidates = getKNN(subject, trainingData);
+            
+            // Use K-NN to estimate the classification of this subject
+            var candidates = getKNN(subject, trainingData, K);
             var predictedClass = voter(candidates);
             var actualClass = trainingData[i].item.alias;
-
-            console.log(predictedClass + ' => ' + actualClass);
-            console.log('---------------');
+            //console.log('f^:' + predictedClass + ' f:' + actualClass);
             if (predictedClass == actualClass) {
-                correctClassifications++;
+                totalClassificationResult.correct++;
+                characterBasedClassificationResult[alias].correct++;
             } else {
-                incorrectClassifications++;
+                totalClassificationResult.incorrect++;
+                characterBasedClassificationResult[alias].incorrect++;
             }
-
+            // Put training instance used as a subject back to our training set
             trainingData[i].data.push(subject);
         }
     }
     
-    return math.round((correctClassifications * 100)/(correctClassifications + incorrectClassifications));
+    console.log('The classification accuracy of each class "A, B, ... Z" for K[' + K + ']');
+    for (var i = 0; i < trainingData.length; i++) {
+        var alias = trainingData[i].item.alias;    
+        // Print out classification accuracy result of each class 'A, B, ... Z'
+        console.log(alias + ': ' + calculateAccuracy(characterBasedClassificationResult[alias]) + ',');
+    }
+    
+    // Return total classification accuracy result
+    return calculateAccuracy(totalClassificationResult);
+}
+
+// Calculate Accuracy based on the obtained result
+function calculateAccuracy(result)
+{
+    return math.round((result.correct * 100)/(result.correct + result.incorrect));
 }
 
 exports.getKNN = getKNN;

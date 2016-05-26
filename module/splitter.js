@@ -1,6 +1,7 @@
+var math = require('mathjs');
+
 var frame = 10;
 var recall = 10;
-
 var thresholdValue = 200;
 var thresholdFrame = 5;
 
@@ -24,6 +25,35 @@ exports.getOneDimension = function(dataBag, dimension) {
     }
     
     return data;
+};
+
+exports.getDimensionDiversity = function (trainingData) {
+    var dimensionDiversity = [];
+    for (var i = 0; i < trainingData.length; i++) {
+        var set = trainingData[i];
+        var max = null;
+        var min = null;
+        var sum = 0;
+        for (var j = 0; j < set.boundary.length; j++) {
+            var boundary = set.boundary[j];
+            var size = boundary[1] - boundary[0];
+            sum = sum + size;
+            if (size > max || max === null) {
+                max = size;
+            }
+            if (size < min || min === null) {
+                min = size;
+            }
+        }
+        dimensionDiversity.push({
+            'alias': set.alias,
+            'min': min,
+            'avre': math.round(sum/set.boundary.length),
+            'max': max
+        });
+    }
+    
+    return dimensionDiversity;
 };
 
 exports.split = function (dataBag) {
