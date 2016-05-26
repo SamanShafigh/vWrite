@@ -45,6 +45,7 @@ exports.getDimensionDiversity = function (trainingData) {
                 min = size;
             }
         }
+        console.log((i + 1) + '    ' + min + '    ' + math.round(sum/set.boundary.length) + '    ' + max);
         dimensionDiversity.push({
             'alias': set.alias,
             'min': min,
