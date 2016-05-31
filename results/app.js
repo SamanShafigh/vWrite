@@ -47,44 +47,47 @@ plot({
             20: 73
         }
     },
-    filename:   './accuracy-number-of-k.svg',
+    filename:   './accuracy-number-of-k.eps',
     style:      'linespoints',
     options: [
         'xtics 2',
         'yrange [50:100]',
         'xrange [1:20]',
         'xlabel "K"',
-        'ylabel "Accuracy"',
+        'ylabel "Accuracy %"',
         'style line 1 lc rgb "#0060ad" lt 1 lw 2 pt 7 ps 1.5',
         'grid ytics lc rgb "#bbbbbb" lw 1 lt 0',
         'grid xtics lc rgb "#bbbbbb" lw 1 lt 0',
-        'terminal svg size 800, 500'
+        'terminal postscript eps enhanced color font "Times Roman,18"'
     ]            
 });
 
 plot({
-    data:  {'accuracy': {
-        2: 85,
-        3: 92,
-        4: 93,
-        5: 92,
-        6: 94,
-        7: 93,
-        8: 95,
-        9: 94
+    data:  {'Accuracy per nth training data': {
+        0: 0,    
+        1: 85,
+        2: 92,
+        3: 93,
+        4: 92,
+        5: 94,
+        6: 93,
+        7: 95,
+        8: 94,
+        9: 95
     }},
-    filename:   './accuracy-number-of-training-data.svg',
+    filename:   './accuracy-number-of-training-data.eps',
     style:      'linespoints',
     options: [
         'xtics 2',
-        'yrange [50:100]',
-        'xrange [1:10]',
+        'yrange [60:100]',
+        'xrange [0:9]',
         'xlabel "nth training data"',
-        'ylabel "Accuracy"',
+        'ylabel "Accuracy %"',
+        'xtics ("0" 0, "1" 1, "2" 2, "3" 3, "4" 4, "5" 5, "6" 6, "7" 7, "8" 8, "9" 9, "10" 10)',
         'style line 1 lc rgb "#0060ad" lt 1 lw 2 pt 7 ps 1.5',
         'grid ytics lc rgb "#bbbbbb" lw 1 lt 0',
         'grid xtics lc rgb "#bbbbbb" lw 1 lt 0',
-        'terminal svg size 800, 500'
+        'terminal postscript eps enhanced color font "Times Roman,18"'
     ]            
 });
 
@@ -117,7 +120,7 @@ plot({
         48: 61145
         }
     },
-    filename:   './nodejs-addons-performance-evaluation.svg',
+    filename:   './nodejs-addons-performance-evaluation.eps',
     style:      'linespoints',
     options: [
         'xtics 2',
@@ -125,10 +128,8 @@ plot({
         'xrange [28:48]',
         'xlabel "nth Fibonacci number"',
         'ylabel "Time (ms)"',
-        'style line 1 lc rgb "#0060ad" lt 1 lw 2 pt 7 ps 1.5',
-        'style line 2 lc rgb "#dd181f" lt 1 lw 2 pt 5 ps 1.5',
-        'grid ytics lc rgb "#bbbbbb" lw 1 lt 0',
-        'grid xtics lc rgb "#bbbbbb" lw 1 lt 0',
-        'terminal svg size 800, 500'
+        'grid ytics lc rgb "#cccccc" lw 2 lt 0',
+        'grid xtics lc rgb "#cccccc" lw 2 lt 0',
+        'terminal postscript eps enhanced color font "Times Roman,18"'
     ]            
 });

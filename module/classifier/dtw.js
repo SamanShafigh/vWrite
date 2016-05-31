@@ -24,11 +24,12 @@ function getDistanceVector(from, to) {
 function getEuclideanDistance(from, to) {
     var distanceVactor = getDistanceVector(from, to);
     var sum = 0;
-    for (var j = 0; j < distanceVactor.length; j++) {
-        sum = sum + math.pow(distanceVactor[j], 2);
+    for (var i = 0; i < classifier.distanceDimensions.length; i++) {
+        var dimension = classifier.distanceDimensions[i];
+        sum = sum + math.pow(distanceVactor[dimension], 2);
     }
     
-    return math.round(math.sqrt(math.pow(distanceVactor[0], 2)));
+    return math.round(math.sqrt(sum));
 }
 
 function getDistanceMatrix(data) {
@@ -39,10 +40,10 @@ function getDistanceMatrix(data) {
         for (var j = 0; j < data.length; j++) {
             var to = data[j];
             var df = [];
-            for (var ii = 0; ii < from.data.length; ii++) {
+            for (var ii = 0; ii < from.instances.length; ii++) {
                 var dt = [];
-                for (var jj = 0; jj < to.data.length; jj++) {        
-                    dt[jj] = getDistanceVector(from.data[ii], to.data[jj]);
+                for (var jj = 0; jj < to.instances.length; jj++) {
+                    dt[jj] = getDistanceVector(from.instances[ii].data, to.instances[jj].data);
                 }
                 df[ii] = dt;
             }
@@ -50,7 +51,7 @@ function getDistanceMatrix(data) {
         }
         distanceMatrix.push({'alias': from.item.alias, 'distances': distanceTo});
     }
-    
+
     return distanceMatrix;
 }
 

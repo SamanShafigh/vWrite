@@ -48,8 +48,12 @@ function getKNN(subject, trainingData, K) {
     var distances = [];
     for (var i = 0; i < trainingData.length; i++) {
         var to = trainingData[i];
-        for (var j = 0; j < to.data.length; j++) {
-            var distance = dtwClassifier.getEuclideanDistance(subject, to.data[j]);
+        for (var j = 0; j < to.instances.length; j++) {
+            var distance = dtwClassifier.getEuclideanDistance(
+                    subject.data, 
+                    to.instances[j].data
+                    );
+            
             distances.push({'alias': to.item.alias, 'distance': distance});
         }
     }
@@ -86,16 +90,16 @@ function crossValidation(trainingData, voter, K) {
             'correct': 0,
             'incorrect': 0
         };
-        for (var j = 0; j < trainingData[i].data.length; j++) {
+        for (var j = 0; j < trainingData[i].instances.length; j++) {
             // Bring out the training instance (subject) from training set
-            var subject = trainingData[i].data.shift();
+            var subject = trainingData[i].instances.shift();
             
             // Use K-NN to estimate the classification of this subject
             var candidates = getKNN(subject, trainingData, K);
             var predictedClass = voter(candidates);
             var actualClass = trainingData[i].item.alias;
             //console.log('f^:' + predictedClass + ' f:' + actualClass);
-            if (predictedClass == actualClass) {
+            if (predictedClass === actualClass) {
                 totalClassificationResult.correct++;
                 characterBasedClassificationResult[alias].correct++;
             } else {
@@ -103,7 +107,7 @@ function crossValidation(trainingData, voter, K) {
                 characterBasedClassificationResult[alias].incorrect++;
             }
             // Put training instance used as a subject back to our training set
-            trainingData[i].data.push(subject);
+            trainingData[i].instances.push(subject);
         }
     }
     

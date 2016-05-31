@@ -1,21 +1,26 @@
 var plot = require('plotter').plot;
+var math = require('mathjs');
 var splitter =   require('./splitter');
 
 // Plot each training instances in a seprate file
-exports.plotTrainingData = function(item, data, dimension) {
+exports.plotTrainingData = function(item, instances, dimension) {
     if (dimension === undefined) {
         dimension = 1;
     }
 
-    for (var i = 0; i < data.length; i++) {
+    for (var i = 0; i < instances.length; i++) {
+        var data = splitter.getOneDimension(instances[i].data, dimension);
+        
         plot({
-            data:       splitter.getOneDimension(data[i], dimension),
-            filename:   './plot/raw/' + item.alias + '-' + dimension + '-' + i + '.svg',
+            data:       data,
+            filename:   './plot/raw/' + item.alias + '-' + dimension + '-' + i + '.eps',
             options: [
-                //'yrange [1400:2200]',
                 'grid xtics lt 0 lw 0 lc rgb "#eeeeee"', 
+                'xrange [0:' + data.length + ']',
+                'xlabel "Time"',
+                'ylabel "Acceleration"',
                 'grid ytics lt 0 lw 0 lc rgb "#eeeeee"',
-                'terminal svg size 800, 500'
+                'terminal postscript eps enhanced color font "Times Roman,18"'
             ]            
         });
     }
@@ -33,16 +38,18 @@ exports.plotData = function(item, data, boundary, numberOfSamples, dimension) {
     var offset = 100;
     var start = boundary[0][0] - offset;
     var end = boundary[numberOfSamples][1] + offset;
-    data = data.slice(start, end);
+    data = splitter.getOneDimension(data.slice(start, end), dimension);
     
     plot({
-        data:       splitter.getOneDimension(data, dimension),
-        filename:   './plot/raw/' + item.alias + '-' + dimension + '.svg',
+        data:       data,
+        filename:   './plot/raw/' + item.alias + '-' + dimension + '.eps',
         options: [
-            //'yrange [1400:2200]',
             'grid xtics lt 0 lw 0 lc rgb "#eeeeee"', 
+            'xrange [0:' + data.length + ']',
+            'xlabel "Time"',
+            'ylabel "Acceleration"',
             'grid ytics lt 0 lw 0 lc rgb "#eeeeee"',
-            'terminal svg size 800, 500'
+            'terminal postscript eps enhanced color font "Times Roman,18"'
         ]            
     });
 };
@@ -52,7 +59,7 @@ exports.plotData = function(item, data, boundary, numberOfSamples, dimension) {
 // Note: this is not the plot of instances from each other. It is the plot of 
 // one instance form the other
 exports.plotDtwData = function(distanceMatrix) {
-    for (var ii = 0; ii < 5; ii++) {
+    for (var ii = 0; ii < 9; ii++) {
         for (var i = 0; i < distanceMatrix.length; i++) {
             var from = distanceMatrix[i];
             var distanceTo = from.distances;
@@ -67,15 +74,18 @@ exports.plotDtwData = function(distanceMatrix) {
                     data[to.alias][dt[0]] = dt[1];
                 }   
             }
-
+            
             plot({
                 data:       data,
-                filename:   './plot/dtw/' + from.alias + '-' + ii + '.svg',
+                filename:   './plot/dtw/' + from.alias + '-' + ii + '.eps',
                 style: 'points',
                 options: [
                     'grid xtics lt 0 lw 0 lc rgb "#eeeeee"', 
                     'grid ytics lt 0 lw 0 lc rgb "#eeeeee"',
-                    'terminal svg size 800, 800'
+                    'xlabel "Accelerometer distance"',
+                    'ylabel "Gyroscope distance"',
+                    'size 1.2,1.4',
+                    'terminal postscript eps enhanced color font "Times Roman,18"'
                 ]
             });
         }

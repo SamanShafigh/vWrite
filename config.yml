@@ -1,6 +1,7 @@
 classifier:
     dtw:
         dimensions: [1, 8]
+        distanceDimensions: [0]
     knn:
         K: 5
         

@@ -5,17 +5,25 @@ var recall = 10;
 var thresholdValue = 200;
 var thresholdFrame = 5;
 
-exports.get = function (dataBag, boundary, length) {
-    var data = [];
+exports.getInstances = function (dataBag, boundary, isTraining, length) {
+    var instances = [];
     if (length === undefined) {
         length = boundary.length;
     }
-    
-    for (var i = 0; i < length; i++) {
-        data.push(dataBag.slice(boundary[i][0], boundary[i][1]));
+    if (isTraining === undefined) {
+        isTraining = true;
     }
     
-    return data;
+    for (var i = 0; i < length; i++) {
+        instances.push({
+            'data': dataBag.slice(boundary[i][0], boundary[i][1]), 
+            'specs': {
+                'isTraining': isTraining
+                }
+            });
+    }
+    
+    return instances;
 };
 
 exports.getOneDimension = function(dataBag, dimension) {
@@ -27,10 +35,10 @@ exports.getOneDimension = function(dataBag, dimension) {
     return data;
 };
 
-exports.getDimensionDiversity = function (trainingData) {
+exports.getDimensionDiversity = function (trainingInfo) {
     var dimensionDiversity = [];
-    for (var i = 0; i < trainingData.length; i++) {
-        var set = trainingData[i];
+    for (var i = 0; i < trainingInfo.length; i++) {
+        var set = trainingInfo[i];
         var max = null;
         var min = null;
         var sum = 0;

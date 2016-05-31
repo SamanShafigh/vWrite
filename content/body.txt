@@ -1,0 +1,4 @@
+1) Type of Training Experience: Direct supervised training data (capital letters) 
+2) Target Function: GetLetters:SnesorData→letter 
+3) Target Function Representation: k-Nearest Neighbours algorithm
+4) Learning Algorithm (Function Approximation Algorithm)
