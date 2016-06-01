@@ -1,9 +1,10 @@
 classifier:
     dtw:
-        dimensions: [1, 8]
-        distanceDimensions: [0]
+        distanceVector: [1, 8]
+        distanceDimension: [0, 1]
     knn:
         K: 5
+        uteBias: 0.5
         
 calibration:
         -

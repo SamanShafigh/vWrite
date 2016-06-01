@@ -19,7 +19,7 @@ exports.calibrate = function (data) {
     var calibratedData = [];
     for (var i = 0; i < data.length; i++) {
         var row = [];
-        row.push(i);
+        row.push(i); // 0
         for (var j = 0; j < 2; j++) {
             var calibrationMatrix = calibrationMatrixs[j];
             var calibrationParam = calibrationParams[j];
@@ -42,13 +42,13 @@ exports.calibrate = function (data) {
             var cz = math.round(calData.subset(math.index(2, 0)), 3);
             var cxyz = math.round(math.sqrt(math.pow(cx, 2) + math.pow(cy, 2) + math.pow(cz, 2)), 3);
             
-            row.push(cxyz);
-            row.push(cx);
-            row.push(cy);
-            row.push(cz);
-            row.push(x);
-            row.push(y);
-            row.push(z);
+            row.push(cxyz); // 1 + offset
+            row.push(cx);   // 2 + offset
+            row.push(cy);   // 3 + offset
+            row.push(cz);   // 4 + offset
+            row.push(x);    // 5 + offset
+            row.push(y);    // 6 + offset
+            row.push(z);    // 7 + offset
         }
         calibratedData.push(row);
     }

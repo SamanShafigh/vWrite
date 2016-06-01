@@ -18,7 +18,8 @@ exports.getInstances = function (dataBag, boundary, isTraining, length) {
         instances.push({
             'data': dataBag.slice(boundary[i][0], boundary[i][1]), 
             'specs': {
-                'isTraining': isTraining
+                'isTraining': isTraining? 0 : 1,
+                'reputation': 0
                 }
             });
     }

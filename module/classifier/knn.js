@@ -3,41 +3,95 @@ var math = require('mathjs');
 var dtwClassifier = require('./dtw');
 var config = yaml.load('config.yml');
 var knnConfig = config.classifier.knn;
+var numberOfInquiries = 0;
 
 // Vote between candidate
 function simpleVote(candidates) {
     var frequency = {};
     var max = 0;
-    var result;
+    var electedCandidate;
     for (var i = 0; i < candidates.length; i++) {
         var candidate = candidates[i].alias;
-        frequency[candidate] = (frequency[candidate] || 0) +  1;
+        frequency[candidate] = 
+                (frequency[candidate] || 0) +  1;
+        
         if (frequency[candidate] > max) {
             max = frequency[candidate];
-            result = candidate;
+            electedCandidate = candidate;
         }        
     }
     
-    return result;
+    return electedCandidate;
 }
 
 // Distance penalty voting
 function distanceBasedVote(candidates) {
     var frequency = {};
     var max = 0;
-    var result;
+    var electedCandidate;
     
     for (var i = 0; i < candidates.length; i++) {
         var candidate = candidates[i].alias;
         var distance = candidates[i].distance;
-        frequency[candidate] = (frequency[candidate] || 0) +  (1/math.pow(distance, 2));
+        frequency[candidate] = 
+                (frequency[candidate] || 0) +  
+                (1/math.pow(distance, 2));
+        
         if (frequency[candidate] > max) {
             max = frequency[candidate];
-            result = candidate;
+            electedCandidate = candidate;
         }        
     }
     
-    return result;
+    return electedCandidate;
+}
+
+// Distance penalty voting + user bias
+function userBiasBasedVote(candidates) {
+    var frequency = {};
+    var max = 0;
+    var electedCandidate;
+    
+    for (var i = 0; i < candidates.length; i++) {
+        var candidate = candidates[i].alias;
+        var distance = candidates[i].distance;
+        frequency[candidate] = 
+                (frequency[candidate] || 0) +  
+                (1/math.pow(distance, 2)) + 
+                (candidate.specs.isTraining * knnConfig.uteBias);
+        
+        if (frequency[candidate] > max) {
+            max = frequency[candidate];
+            electedCandidate = candidate;
+        }        
+    }
+    
+    return electedCandidate;
+}
+
+// Distance penalty voting + reputation bias
+function reputationBasedVote(candidates) {
+    var frequency = {};
+    var max = 0;
+    var electedCandidate;
+    
+    for (var i = 0; i < candidates.length; i++) {
+        var candidate = candidates[i].alias;
+        var distance = candidates[i].distance;
+        frequency[candidate] = 
+                (frequency[candidate] || 0) +  
+                (1/math.pow(distance, 2)) + 
+                (candidate.specs.reputation/numberOfInquiries);
+        
+        if (frequency[candidate] > max) {
+            max = frequency[candidate];
+            electedCandidate = candidate;
+        }        
+    }
+    
+    electedCandidate.specs.reputation = electedCandidate.specs.reputation + 1;
+    
+    return electedCandidate;
 }
 
 // Get the Kth nearest neighbor
@@ -69,11 +123,13 @@ function getKNN(subject, trainingData, K) {
         candidates.push(distances[i]);
     }
     
+    numberOfInquiries++;
+    
     return candidates;
 }
 
 // Perform the cross validation of K-NN classification
-function crossValidation(trainingData, voter, K) {
+function crossValidation(trainingData, voter, K, debug) {
     var characterBasedClassificationResult = {};
     var totalClassificationResult = {
         'correct': 0,  // Total number of correct classifications
@@ -81,7 +137,10 @@ function crossValidation(trainingData, voter, K) {
     };
     if (K === undefined) {
         K = knnConfig.K;
-    }    
+    }
+    if (debug === undefined) {
+        debug = true;
+    }
     
     //console.log('f^: is a predicted class and f: is an ctual class');
     for (var i = 0; i < trainingData.length; i++) {
@@ -111,13 +170,15 @@ function crossValidation(trainingData, voter, K) {
         }
     }
     
-    console.log('The classification accuracy of each class "A, B, ... Z" for K[' + K + ']');
-    for (var i = 0; i < trainingData.length; i++) {
-        var alias = trainingData[i].item.alias;    
-        // Print out classification accuracy result of each class 'A, B, ... Z'
-        console.log(alias + ': ' + calculateAccuracy(characterBasedClassificationResult[alias]) + ',');
+    if (debug) {
+        console.log('The classification accuracy of each class "A, B, ... Z" for K[' + K + ']');
+        for (var i = 0; i < trainingData.length; i++) {
+            var alias = trainingData[i].item.alias;    
+            // Print out classification accuracy result of each class 'A, B, ... Z'
+            console.log(alias + ': ' + calculateAccuracy(characterBasedClassificationResult[alias]) + ',');
+        }
     }
-    
+        
     // Return total classification accuracy result
     return calculateAccuracy(totalClassificationResult);
 }
@@ -129,6 +190,8 @@ function calculateAccuracy(result)
 }
 
 exports.getKNN = getKNN;
+exports.crossValidation = crossValidation;
 exports.simpleVote = simpleVote;
 exports.distanceBasedVote = distanceBasedVote;
-exports.crossValidation = crossValidation;
+exports.userBiasBasedVote = userBiasBasedVote;
+exports.reputationBasedVote = reputationBasedVote;

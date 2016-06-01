@@ -10,11 +10,43 @@ var math =          require('mathjs');
 var config = yaml.load('config.yml');
 var trainingClasses = config.training;
 //trainingClasses = trainingClasses.slice(0, 6);
-splitter.getDimensionDiversity(trainingClasses);
 
-main();
+main2();
+
+function main2() {
+    var trainingData = [];
+    for (var key in trainingClasses) {
+        if (trainingClasses.hasOwnProperty(key)) {
+            // Preparing training data
+            // Extracting and splitting training sets of each character
+            var item = trainingClasses[key];
+            extractor.extract(item, function(data, item) {
+                var calibratedDate = calibrator.calibrate(data);
+                // Plot some of training instances in one plot
+                var instances = splitter.getInstances(calibratedDate, item.boundary);
+
+                // Aggregating all training instances
+                trainingData.push({'item': item, 'instances': instances});
+                if (trainingData.length === trainingClasses.length) {
+                    // Performing cross validation for K = 1 to K = 20
+                    var K = 4;
+                    var accuracy = knn.crossValidation(
+                        trainingData, // Training data
+                        knn.distanceBasedVote, // Voting method for the k nearest neighbors
+                        K, // Number of neighbors
+                        false // Debug mode
+                        );
+
+                    console.log(K + ": " + accuracy);
+                }
+            });
+        }
+    }
+}
 
 function main() {
+    splitter.getDimensionDiversity(trainingClasses);
+
     var trainingData = [];
     for (var key in trainingClasses) {
         if (trainingClasses.hasOwnProperty(key)) {

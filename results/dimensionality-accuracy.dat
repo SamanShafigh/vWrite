@@ -1,0 +1,25 @@
+1 "Acceleration X" 73
+2 "Acceleration Y" 95
+3 "Acceleration Z" 94
+4 "Acceleration XY" 91
+5 "Acceleration XZ" 90
+6 "Acceleration YZ" 97
+7 "Acceleration XYZ" 96
+8 "Gyroscope X" 94
+9 "Gyroscope Y" 69
+10 "Gyroscope Z" 81
+11 "Gyroscope XYZ" 78
+12 "Acceleration XYZ, Gyroscope XYZ" 78
+
+#1 Acceleration X   [2] [0]
+#2 Acceleration Y   [3] [0]
+#3 Acceleration Z   [4] [0]
+#4 Acceleration XY  [2, 3] [0, 1] 
+#5 Acceleration XZ  [2, 4] [0, 1] 
+#6 Acceleration YZ  [3, 4] [0, 1] 
+#7 Acceleration XYZ [1] [0] 
+#8 Gyroscope X      [9] [0] 
+#9 Gyroscope Y      [10] [0] 
+#10 Gyroscope Z     [11] [0] 
+#11 Gyroscope XYZ   [8] [0] 
+#12 Acceleration XYZ, Gyroscope XYZ  [1, 8] [0, 1]
