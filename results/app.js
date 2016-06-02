@@ -1,5 +1,35 @@
 var plot = require('plotter').plot;
 
+
+plot({
+    data:  {'Execution time per nth training data': {
+        234: 579,    
+        468: 1148,
+        702: 1625,
+        936: 2140,
+        1170: 2915,
+        1404: 3546,
+        1638: 4199,
+        1872: 4650,
+        2106: 4949,
+        2340: 5619
+    }},
+    filename:   './execution-time-number-of-training-data.eps',
+    style:      'linespoints',
+    options: [
+        'xtics 2',
+        'yrange [500:6000]',
+        'xrange [200:2340]',
+        'xlabel "nth training data"',
+        'ylabel "Accuracy %"',
+        'xtics ("234" 234, "468" 468, "702" 702, "936" 936, "1170" 1170, "1404" 1404, "1638" 1638, "1872" 1872, "2106" 2106, "2340" 2340)',
+        'style line 1 lc rgb "#0060ad" lt 1 lw 2 pt 7 ps 1.5',
+        'grid ytics lc rgb "#bbbbbb" lw 1 lt 0',
+        'grid xtics lc rgb "#bbbbbb" lw 1 lt 0',
+        'terminal postscript eps enhanced color font "Times Roman,18"'
+    ]            
+});
+
 plot({
     data:  {
         'Distance based voting': {
