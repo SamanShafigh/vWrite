@@ -7,91 +7,88 @@ var numberOfInquiries = 0;
 
 // Vote between candidate
 function simpleVote(candidates) {
-    var frequency = {};
     var max = 0;
-    var electedCandidate;
+    var classWeight = {};
+    var electedClass;
+
     for (var i = 0; i < candidates.length; i++) {
-        var candidate = candidates[i].alias;
-        frequency[candidate] = 
-                (frequency[candidate] || 0) +  1;
+        var candidate = candidates[i];
+        classWeight[candidate.alias] = 
+                (classWeight[candidate.alias] || 0) +  1;
         
-        if (frequency[candidate] > max) {
-            max = frequency[candidate];
-            electedCandidate = candidate;
+        if (classWeight[candidate.alias] > max) {
+            max = classWeight[candidate.alias];
+            electedClass = candidate.alias;
         }        
     }
     
-    return electedCandidate;
+    return electedClass;
 }
 
 // Distance penalty voting
 function distanceBasedVote(candidates) {
-    var frequency = {};
     var max = 0;
-    var electedCandidate;
+    var classWeight = {};
+    var electedClass;
     
     for (var i = 0; i < candidates.length; i++) {
-        var candidate = candidates[i].alias;
-        var distance = candidates[i].distance;
-        frequency[candidate] = 
-                (frequency[candidate] || 0) +  
-                (1/math.pow(distance, 2));
+        var candidate = candidates[i];
+        classWeight[candidate.alias] = 
+                (classWeight[candidate.alias] || 0) +  
+                (1/math.pow(candidate.distance, 2));
         
-        if (frequency[candidate] > max) {
-            max = frequency[candidate];
-            electedCandidate = candidate;
+        if (classWeight[candidate.alias] > max) {
+            max = classWeight[candidate.alias];
+            electedClass = candidate.alias;
         }        
     }
     
-    return electedCandidate;
+    return electedClass;
 }
 
 // Distance penalty voting + user bias
 function userBiasBasedVote(candidates) {
-    var frequency = {};
     var max = 0;
-    var electedCandidate;
+    var classWeight = {};
+    var electedClass;
     
     for (var i = 0; i < candidates.length; i++) {
-        var candidate = candidates[i].alias;
-        var distance = candidates[i].distance;
-        frequency[candidate] = 
-                (frequency[candidate] || 0) +  
-                (1/math.pow(distance, 2)) + 
+        var candidate = candidates[i];
+        classWeight[candidate.alias] = 
+                (classWeight[candidate.alias] || 0) +  
+                (1/math.pow(candidate.distance, 2)) + 
                 (candidate.specs.isTraining * knnConfig.uteBias);
         
-        if (frequency[candidate] > max) {
-            max = frequency[candidate];
-            electedCandidate = candidate;
+        if (classWeight[candidate.alias] > max) {
+            max = classWeight[candidate.alias];
+            electedClass = candidate.alias;
         }        
     }
     
-    return electedCandidate;
+    return electedClass;
 }
 
 // Distance penalty voting + reputation bias
 function reputationBasedVote(candidates) {
-    var frequency = {};
     var max = 0;
-    var electedCandidate;
-    
+    var classWeight = {};
+    var electedClass;
     for (var i = 0; i < candidates.length; i++) {
-        var candidate = candidates[i].alias;
-        var distance = candidates[i].distance;
-        frequency[candidate] = 
-                (frequency[candidate] || 0) +  
-                (1/math.pow(distance, 2)) + 
+        var candidate = candidates[i];
+        classWeight[candidate.alias] = 
+                (classWeight[candidate.alias] || 0) +  
+                (1/math.pow(candidate.distance, 2)) + 
                 (candidate.specs.reputation/numberOfInquiries);
         
-        if (frequency[candidate] > max) {
-            max = frequency[candidate];
-            electedCandidate = candidate;
+        if (classWeight[candidate.alias] > max) {
+            max = classWeight[candidate.alias];
+            electedClass = candidate.alias;
         }        
     }
     
-    electedCandidate.specs.reputation = electedCandidate.specs.reputation + 1;
+    electedClass.specs.reputation = electedClass.specs.reputation + 1;
     
-    return electedCandidate;
+    return electedClass;
 }
 
 // Get the Kth nearest neighbor
@@ -103,12 +100,17 @@ function getKNN(subject, trainingData, K) {
     for (var i = 0; i < trainingData.length; i++) {
         var to = trainingData[i];
         for (var j = 0; j < to.instances.length; j++) {
+            var traningInstance = to.instances[j];
             var distance = dtwClassifier.getEuclideanDistance(
                     subject.data, 
-                    to.instances[j].data
+                    traningInstance.data
                     );
             
-            distances.push({'alias': to.item.alias, 'distance': distance});
+            distances.push({
+                'alias': to.item.alias,
+                'specs': traningInstance.specs,
+                'distance': distance
+            });
         }
     }
     

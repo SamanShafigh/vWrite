@@ -9,9 +9,9 @@ var math =          require('mathjs');
 
 var config = yaml.load('config.yml');
 var trainingClasses = config.training;
-//trainingClasses = trainingClasses.slice(0, 2);
+//trainingClasses = trainingClasses.slice(0, 6);
 
-main3();
+main();
 
 function main() {
     var trainingData = [];
@@ -51,7 +51,7 @@ function main() {
                         console.log("Calculate cross validation for K = " + K + " ...");
                         var accuracy = knn.crossValidation(
                             trainingData, // Training data
-                            knn.simpleVote, // Voting method for the k nearest neighbors
+                            knn.distanceBasedVote, // Voting method for the k nearest neighbors
                             K // Number of neighbors
                             );
                     
@@ -79,7 +79,7 @@ function main2() {
                 trainingData.push({'item': item, 'instances': instances});
                 if (trainingData.length === trainingClasses.length) {
                     // Performing cross validation for K = 1 to K = 20
-                    var K = 4;
+                    var K = 5;
                     var accuracy = knn.crossValidation(
                         trainingData, // Training data
                         knn.distanceBasedVote, // Voting method for the k nearest neighbors
@@ -124,7 +124,9 @@ function main3() {
 
                     var end = new Date().getTime();
                     var time = end - start;
-                    console.log('Execution time to perform KNN on ' + (numberOfTrainingInstancesPerClass * trainingClasses.length) + ' instances: ' + time + ' milliseconds');                    
+                    console.log('Execution time to perform KNN on ' + 
+                            (numberOfTrainingInstancesPerClass * trainingClasses.length) + 
+                            ' instances: ' + time + ' milliseconds');                    
                 }
             });
         }

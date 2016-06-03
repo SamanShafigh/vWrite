@@ -1,7 +1,7 @@
 classifier:
     dtw:
-        distanceVector: [1, 8]
-        distanceDimension: [0, 1]
+        distanceVector: [1]
+        distanceDimension: [0]
     knn:
         K: 5
         uteBias: 0.5

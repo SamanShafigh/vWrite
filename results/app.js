@@ -21,7 +21,7 @@ plot({
         'yrange [500:6000]',
         'xrange [200:2340]',
         'xlabel "nth training data"',
-        'ylabel "Accuracy %"',
+        'ylabel "Time (ms)',
         'xtics ("234" 234, "468" 468, "702" 702, "936" 936, "1170" 1170, "1404" 1404, "1638" 1638, "1872" 1872, "2106" 2106, "2340" 2340)',
         'style line 1 lc rgb "#0060ad" lt 1 lw 2 pt 7 ps 1.5',
         'grid ytics lc rgb "#bbbbbb" lw 1 lt 0',
